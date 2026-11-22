@@ -24,4 +24,26 @@ def initialize_db():
     finally:
         connection.close()
         
+def load_sample_products():
+    connection = sqlite3.connect(DB_NAME)
+    
+    try:
+        cursor = connection.cursor()
         
+        cursor.execute("SELECT COUNT(*) FROM prooducts")
+        count = cursor.fetchone()[0]
+        
+        if count == 0:
+            for product in products:
+                if product.is_valid():
+                    cursor.execute(
+                        """
+                        INSERT INTO products(name,price,quantity)
+                        VALUES (?, ?, ?)
+                        """,
+                        (product.name, product.price, product.quantity)  
+                    )
+                    
+        connection.commit()
+        
+    finally:connection.close()        
