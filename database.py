@@ -30,7 +30,7 @@ def load_sample_products():
     try:
         cursor = connection.cursor()
         
-        cursor.execute("SELECT COUNT(*) FROM prooducts")
+        cursor.execute("SELECT COUNT(*) FROM products")
         count = cursor.fetchone()[0]
         
         if count == 0:
@@ -46,4 +46,97 @@ def load_sample_products():
                     
         connection.commit()
         
-    finally:connection.close()        
+    finally:
+        connection.close() 
+
+def add_product(name, price, quantity):
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(
+            "INSERT INTO products (name, price, quantity) VALUES (?, ?, ?)",
+            (name, price, quantity)
+        )
+        connection.commit()
+        
+    except sqlite3.Error:
+        connection.rollback()
+        raise
+        
+    finally:
+        connection.close()
+        
+
+def update_product(product_id, name, price, quantity):
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("""
+            UPDATE products
+            SET name = ?, price = ?, quantity = ?
+            WHERE id = ?
+        """, (name, price, quantity, product_id))
+
+        connection.commit()
+        return cursor.rowcount
+    
+    except sqlite3.Error:
+        connection.rollback()
+        raise
+        
+    finally:
+        connection.close()
+        
+        
+def delete_product(product_id):
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(
+            "DELETE FROM products WHERE id = ?",
+            (product_id,)
+        )
+        connection.commit()
+        return cursor.rowcount
+    
+    except sqlite3.Error:
+        connection.rollback()
+        raise
+        
+    finally:
+        connection.close()
+        
+def search_products(search_term):
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT * FROM products
+            WHERE name LIKE ?
+        """, (f"%{search_term}%",))
+
+        return cursor.fetchall()
+    
+        
+    finally:
+        connection.close()
+        
+def get_products():
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM products")
+        return cursor.fetchall()
+    
+    
+
+    finally:
+        connection.close()
+
+
+       
