@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+.venv/
+
+# Local database (real business data)
+*.db
+*.sqlite3
+
+# Secrets and local config
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Exported reports and editor/OS files
+*.csv
+.vscode/
+.DS_Store
+Thumbs.db
