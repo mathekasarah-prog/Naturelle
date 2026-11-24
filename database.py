@@ -13,7 +13,8 @@ def initialize_db():
                 id INTEGER PRIMARY KEY,
                 name TEXT NOT NULL UNIQUE,
                 price REAL NOT NULL,
-                quantity INTEGER NOT NULL DEFAULT 0
+                quantity INTEGER NOT NULL DEFAULT 0,
+                category TEXT NOT NULL
             )
             
         """)

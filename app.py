@@ -96,4 +96,9 @@ if page == "Dashboard":
     )
     
     
+   # VIEW INVENTORY
+elif page == "View Inventory":
+
+    st.subheader("Inventory") 
+    
     
