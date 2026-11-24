@@ -103,4 +103,42 @@ elif page == "View Inventory":
 
     st.subheader("Inventory") 
     
-    
+    # Get all products
+    all_products = get_products()
+
+    # Get available categories
+    categories = sorted({
+        product[4] for product in all_products
+    })
+
+    # Add an option to view everything
+    category_options = ["All categories"] + categories
+
+    # Category dropdown
+    selected_category = st.selectbox(
+        "Filter by Category",
+        category_options
+    )
+
+    # Search input
+    search_term = st.text_input("Search by product name")
+
+    # Filter by category
+    filtered_products = get_products(selected_category)
+
+    # Apply name search as well
+    if search_term:
+        filtered_products = [
+            product for product in filtered_products
+            if search_term.lower() in product[1].lower()
+        ]
+
+    # Display results
+    if filtered_products:
+        st.dataframe(
+            prepare_inventory_data(filtered_products),
+            use_container_width=True,
+            hide_index=True
+        )
+    else:
+        st.info("No products found.")

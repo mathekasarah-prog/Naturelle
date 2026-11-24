@@ -15,7 +15,7 @@ def initialize_db():
                 name TEXT NOT NULL UNIQUE,
                 price REAL NOT NULL,
                 quantity INTEGER NOT NULL DEFAULT 0,
-                category TEXT NOT NULL
+                category TEXT NOT NULL DEFAULT 'Uncategorized'
             )
             
         """)
@@ -25,6 +25,8 @@ def initialize_db():
         raise
     finally:
         connection.close()
+        
+    
         
         
 #LOADING SAMPLE PRODUCT
@@ -134,15 +136,25 @@ def search_products(search_term):
         
         
  #GET PRODUCTS       
-def get_products():
+def get_products(category=None):
     connection = sqlite3.connect(DB_NAME)
 
     try:
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM products")
+
+        if category and category != "All categories":
+            cursor.execute(
+                "SELECT * FROM products WHERE category = ?",
+                (category,)
+            )
+        else:
+            cursor.execute("SELECT * FROM products")
+
         return cursor.fetchall()
-    
-    
+
+    except sqlite3.Error:
+        connection.rollback()
+        raise
 
     finally:
         connection.close()
