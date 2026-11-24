@@ -3,6 +3,7 @@ from products import products
 
 DB_NAME = "inventory.db"
 
+#INITIALIZE DATABASE
 def initialize_db():
     connection = sqlite3.connect(DB_NAME)
     cursor = connection.cursor()
@@ -25,6 +26,8 @@ def initialize_db():
     finally:
         connection.close()
         
+        
+#LOADING SAMPLE PRODUCT
 def load_sample_products():
     connection = sqlite3.connect(DB_NAME)
     
@@ -49,15 +52,15 @@ def load_sample_products():
         
     finally:
         connection.close() 
-
-def add_product(name, price, quantity):
+#ADD PRODUCT
+def add_product(name, price, quantity, category):
     connection = sqlite3.connect(DB_NAME)
 
     try:
         cursor = connection.cursor()
         cursor.execute(
-            "INSERT INTO products (name, price, quantity) VALUES (?, ?, ?)",
-            (name, price, quantity)
+            "INSERT INTO products (name, price, quantity, category) VALUES (?, ?, ?)",
+            (name, price, quantity, category)
         )
         connection.commit()
         
@@ -68,17 +71,17 @@ def add_product(name, price, quantity):
     finally:
         connection.close()
         
-
-def update_product(product_id, name, price, quantity):
+#UPDATE PRODUCT
+def update_product(product_id, name, price, quantity, category):
     connection = sqlite3.connect(DB_NAME)
 
     try:
         cursor = connection.cursor()
         cursor.execute("""
             UPDATE products
-            SET name = ?, price = ?, quantity = ?
+            SET name = ?, price = ?, quantity = ?, category = ?
             WHERE id = ?
-        """, (name, price, quantity, product_id))
+        """, (name, price, quantity, category,  product_id))
 
         connection.commit()
         return cursor.rowcount
@@ -91,6 +94,7 @@ def update_product(product_id, name, price, quantity):
         connection.close()
         
         
+#DELETE PRODUCT
 def delete_product(product_id):
     connection = sqlite3.connect(DB_NAME)
 
@@ -110,6 +114,8 @@ def delete_product(product_id):
     finally:
         connection.close()
         
+        
+ #SEARCH PRODUCT       
 def search_products(search_term):
     connection = sqlite3.connect(DB_NAME)
 
@@ -126,6 +132,8 @@ def search_products(search_term):
     finally:
         connection.close()
         
+        
+ #GET PRODUCTS       
 def get_products():
     connection = sqlite3.connect(DB_NAME)
 
