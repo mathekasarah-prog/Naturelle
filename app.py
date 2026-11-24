@@ -9,7 +9,8 @@ def prepare_inventory_data(products):
             "ID": product[0],
             "Name": product[1],
             "Price": product[2],
-            "Quantity": product[3]
+            "Quantity": product[3],
+            "Category": product[4]
         }
         for product in products
     ]
@@ -74,7 +75,7 @@ if page == "Dashboard":
         1 for product in products if product[3] == 0
     )
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
 
     col1.metric("Total Products", total_products)
 
@@ -89,6 +90,7 @@ if page == "Dashboard":
     
     st.subheader("Recent Inventory")
 
+    print(len(products[0]), products[0])
     st.dataframe(
         prepare_inventory_data(products),
         use_container_width=True,

@@ -42,10 +42,10 @@ def load_sample_products():
                 if product.is_valid():
                     cursor.execute(
                         """
-                        INSERT INTO products(name,price,quantity)
-                        VALUES (?, ?, ?)
+                        INSERT INTO products(name,price,quantity,category)
+                        VALUES (?, ?, ?, ?)
                         """,
-                        (product.name, product.price, product.quantity)  
+                        (product.name, product.price, product.quantity, product.category)  
                     )
                     
         connection.commit()
@@ -59,7 +59,7 @@ def add_product(name, price, quantity, category):
     try:
         cursor = connection.cursor()
         cursor.execute(
-            "INSERT INTO products (name, price, quantity, category) VALUES (?, ?, ?)",
+            "INSERT INTO products (name, price, quantity, category) VALUES (?, ?, ?, ?)",
             (name, price, quantity, category)
         )
         connection.commit()
