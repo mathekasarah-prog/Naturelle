@@ -153,11 +153,9 @@ def get_products(category=None):
         return cursor.fetchall()
 
     except sqlite3.Error:
-        connection.rollback()
         raise
 
     finally:
         connection.close()
-
 
        
