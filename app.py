@@ -74,6 +74,17 @@ if page == "Dashboard":
     out_of_stock = sum(
         1 for product in products if product[3] == 0
     )
+    
+    # Count products in each category
+    category_counts = {}
+
+    for product in products:
+        category = product[4]
+
+        if category in category_counts:
+            category_counts[category] += 1
+        else:
+            category_counts[category] = 1
 
     col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -142,6 +153,68 @@ elif page == "View Inventory":
         )
     else:
         st.info("No products found.")
+        
+        
+elif page == "Add Product":
+
+    st.subheader("Add New Product")
+
+    category_options = [
+        "Body Care",
+        "Skin Care",
+        "Hair Care",
+        "Wellness",
+        "Gift Sets"
+    ]
+
+    with st.form("add_product_form"):
+
+        name = st.text_input("Product Name")
+
+        price = st.number_input(
+            "Price (KSh)",
+            min_value=0.01,
+            step=50.0
+        )
+
+        quantity = st.number_input(
+            "Quantity",
+            min_value=0,
+            step=1
+        )
+
+        category = st.selectbox(
+            "Product Category",
+            category_options
+        )
+
+        submitted = st.form_submit_button("Add Product")
+
+        if submitted:
+
+            product = Product(name, price, quantity, category)
+
+            if product.is_valid():
+
+                try:
+                    add_product(
+                        name,
+                        price,
+                        quantity,
+                        category
+                    )
+
+                    st.success(f"{name} added successfully!")
+                    st.rerun()
+
+                except sqlite3.IntegrityError:
+                    st.error("A product with this name already exists.")
+
+                except sqlite3.Error:
+                    st.error("Something went wrong while adding the product.")
+
+            else:
+                st.error("Please enter valid product details.")
         
 #UPDATE PRODUCTS
 elif page == "Update Product":
