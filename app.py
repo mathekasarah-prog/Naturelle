@@ -104,7 +104,6 @@ if page == "Dashboard":
     
     st.subheader("Recent Inventory")
 
-    print(len(products[0]), products[0])
     st.dataframe(
         prepare_inventory_data(products),
         use_container_width=True,

@@ -5,6 +5,7 @@ __pycache__/
 # Virtual environments
 venv/
 .venv/
+virtual/
 
 # Local database (real business data)
 *.db
