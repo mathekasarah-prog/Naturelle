@@ -141,7 +141,7 @@ elif page == "View Inventory":
     if search_term:
         filtered_products = [
             product for product in filtered_products
-            if search_term.lower() in product[1].lower()
+            if search_term.lower() in product[1].lower().strip()
         ]
 
     # Display results
