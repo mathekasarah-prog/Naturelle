@@ -306,3 +306,60 @@ elif page == "Update Product":
 
     else:
         st.info("There are no products available to update.")
+        
+        
+
+elif page == "Delete Product":
+
+    st.subheader("Delete Product")
+
+    products = get_products()
+
+    if products:
+
+        product_ids = [product[0] for product in products]
+
+        selected_id = st.selectbox(
+            "Select Product ID to Delete",
+            product_ids
+        )
+
+        selected_product = next(
+            product for product in products
+            if product[0] == selected_id
+        )
+
+        st.warning(
+            f"You are about to delete: {selected_product[1]}"
+        )
+
+        st.write(f"Category: {selected_product[4]}")
+        st.write(f"Price: KSh {selected_product[2]:,.2f}")
+        st.write(f"Quantity: {selected_product[3]}")
+
+        confirm = st.checkbox(
+            "I confirm that I want to delete this product."
+        )
+
+        if st.button("Delete Product", disabled=not confirm):
+
+            try:
+                deleted = delete_product(selected_id)
+
+                if deleted:
+                    st.success("Product deleted successfully!")
+                    st.rerun()
+
+                else:
+                    st.warning("Product was not found.")
+
+            except sqlite3.Error:
+                st.error("Something went wrong while deleting the product.")
+
+    else:
+        st.info("There are no products available to delete.")
+        
+        
+        
+        
+        
