@@ -160,7 +160,7 @@ elif page == "View Inventory":
     else:
         st.info("No products found.")
         
-        
+  #ADD PRODUCT      
 elif page == "Add Product":
 
     st.subheader("Add New Product")
@@ -314,7 +314,7 @@ elif page == "Update Product":
         st.info("There are no products available to update.")
         
         
-
+#DELETE PRODUCT
 elif page == "Delete Product":
 
     st.subheader("Delete Product")
@@ -364,7 +364,9 @@ elif page == "Delete Product":
 
     else:
         st.info("There are no products available to delete.")
-        
+
+
+#EXPORT CSV
 elif page == "Export CSV":
 
     st.subheader("Export Inventory to CSV")
