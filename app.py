@@ -55,6 +55,9 @@ page = st.sidebar.radio(
         "Export CSV"
     ]
 )
+# Show a one-time message (set before a rerun)
+if "flash" in st.session_state:
+    st.success(st.session_state.pop("flash"))
 
 # DASHBOARD
 if page == "Dashboard":
@@ -170,7 +173,7 @@ elif page == "Add Product":
         "Gift Sets"
     ]
 
-    with st.form("add_product_form"):
+    with st.form("add_product_form", clear_on_submit=True ):
 
         name = st.text_input("Product Name")
 
@@ -207,7 +210,7 @@ elif page == "Add Product":
                         category
                     )
 
-                    st.success(f"{name} added successfully!")
+                    st.session_state["flash"] = f"{name} added successfully!"
                     st.rerun()
 
                 except sqlite3.IntegrityError:
@@ -295,7 +298,7 @@ elif page == "Update Product":
                             category
                         )
 
-                        st.success("Product updated successfully!")
+                        st.session_state["flash"] = "Product updated successfully!"
                         st.rerun()
 
                     except sqlite3.IntegrityError as e:
