@@ -142,3 +142,94 @@ elif page == "View Inventory":
         )
     else:
         st.info("No products found.")
+        
+#UPDATE PRODUCTS
+elif page == "Update Product":
+
+    st.subheader("Update Product")
+
+    products = get_products()
+
+    if products:
+
+        # Select the product to update
+        product_ids = [product[0] for product in products]
+
+        selected_id = st.selectbox(
+            "Select Product ID",
+            product_ids
+        )
+
+        # Find the selected product
+        selected_product = next(
+            product for product in products
+            if product[0] == selected_id
+        )
+
+        # Available categories
+        category_options = [
+            "Body Care",
+            "Skin Care",
+            "Hair Care",
+            "Wellness",
+            "Gift Sets",
+            "Uncategorized"
+        ]
+
+        # Update form
+        with st.form("update_product_form"):
+
+            name = st.text_input(
+                "Product Name",
+                value=selected_product[1]
+            )
+
+            price = st.number_input(
+                "Price",
+                min_value=0.01,
+                value=float(selected_product[2])
+            )
+
+            quantity = st.number_input(
+                "Quantity",
+                min_value=0,
+                value=int(selected_product[3])
+            )
+
+            category = st.selectbox(
+                "Product Category",
+                category_options,
+                index=category_options.index(selected_product[4])
+            )
+
+            submitted = st.form_submit_button("Update Product")
+
+            if submitted:
+
+                product = Product(name, price, quantity, category)
+
+                if product.is_valid():
+
+                    try:
+                        update_product(
+                            selected_id,
+                            name,
+                            price,
+                            quantity,
+                            category
+                        )
+
+                        st.success("Product updated successfully!")
+                        st.rerun()
+
+                    except sqlite3.IntegrityError:
+                        st.error("A product with this name already exists.")
+
+                    except sqlite3.Error:
+                        st.error("Something went wrong while updating the product.")
+
+                else:
+                    st.error("Please enter valid product details.")
+
+    else:
+        st.info("There are no products available to update.")
