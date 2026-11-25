@@ -53,7 +53,7 @@ SmartStock/
 
 ### 1. Clone the repository
 
-git clone <your-repository-url>
+git clone <https://github.com/mathekasarah-prog/Naturelle.git>
 
 ### 2. Navigate into the project directory
 
