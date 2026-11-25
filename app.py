@@ -134,15 +134,18 @@ elif page == "View Inventory":
     # Search input
     search_term = st.text_input("Search by product name")
 
-    # Filter by category
-    filtered_products = get_products(selected_category)
-
-    # Apply name search as well
+        # Search by name, or fall back to the category filter
     if search_term:
-        filtered_products = [
-            product for product in filtered_products
-            if search_term.lower() in product[1].lower().strip()
-        ]
+        filtered_products = search_products(search_term.strip())
+
+        # Keep the category dropdown working with search
+        if selected_category != "All categories":
+            filtered_products = [
+                product for product in filtered_products
+                if product[4] == selected_category
+            ]
+    else:
+        filtered_products = get_products(selected_category)
 
     # Display results
     if filtered_products:
