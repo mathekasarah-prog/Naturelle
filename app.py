@@ -359,6 +359,51 @@ elif page == "Delete Product":
     else:
         st.info("There are no products available to delete.")
         
+elif page == "Export CSV":
+
+    st.subheader("Export Inventory to CSV")
+
+    products = get_products()
+
+    if products:
+
+        try:
+            output = io.StringIO()
+
+            fieldnames = [
+                "ID",
+                "Name",
+                "Price",
+                "Quantity",
+                "Category"
+            ]
+
+            writer = csv.DictWriter(
+                output,
+                fieldnames=fieldnames
+            )
+
+            writer.writeheader()
+
+            writer.writerows(
+                prepare_inventory_data(products)
+            )
+
+            csv_data = output.getvalue()
+
+            st.download_button(
+                label="Download Inventory CSV",
+                data=csv_data,
+                file_name="smartstock_inventory.csv",
+                mime="text/csv"
+            )
+
+        except (csv.Error, OSError, ValueError):
+            st.error("Unable to prepare the CSV file.")
+
+    else:
+        st.info("There are no products to export.")
+        
         
         
         
