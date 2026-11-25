@@ -298,8 +298,8 @@ elif page == "Update Product":
                         st.success("Product updated successfully!")
                         st.rerun()
 
-                    except sqlite3.IntegrityError:
-                        st.error("A product with this name already exists.")
+                    except sqlite3.IntegrityError as e:
+                        st.error(f"Database error: {e}")
 
                     except sqlite3.Error:
                         st.error("Something went wrong while updating the product.")
