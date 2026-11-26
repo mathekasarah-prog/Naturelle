@@ -72,7 +72,6 @@ def register_admin(username, password):
         connection.close()
         
         
-
 def authenticate_admin(username, password):
     username = username.strip()
 
