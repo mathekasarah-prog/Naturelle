@@ -3,6 +3,8 @@ import sqlite3
 import csv
 import io
 
+from auth import authenticate_admin
+
 def prepare_inventory_data(products):
     return [
         {
@@ -34,8 +36,53 @@ st.set_page_config(
     layout="wide"
 )
 
+
 # INITIALIZE DATABASE
 initialize_db()
+
+# INITIALIZE LOGIN SESSION
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+if "admin" not in st.session_state:
+    st.session_state["admin"] = None
+    
+    
+# ADMIN LOGIN
+if not st.session_state["authenticated"]:
+
+    st.title("🧠 SmartStock")
+    st.subheader("Administrator Login")
+
+    with st.form("login_form"):
+
+        username = st.text_input("Username")
+
+        password = st.text_input(
+            "Password",
+            type="password"
+        )
+
+        submitted = st.form_submit_button("Login")
+
+        if submitted:
+
+            admin = authenticate_admin(username, password)
+
+            if admin:
+
+                st.session_state["authenticated"] = True
+                st.session_state["admin"] = admin
+
+                st.success("Login successful!")
+
+                st.rerun()
+
+            else:
+                st.error("Invalid username or password.")
+
+    st.stop()
+    
 load_sample_products()
 
 

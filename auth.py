@@ -70,3 +70,37 @@ def register_admin(username, password):
 
     finally:
         connection.close()
+        
+        
+
+def authenticate_admin(username, password):
+    username = username.strip()
+
+    connection = sqlite3.connect(DB_NAME)
+
+    try:
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT id, username, password_hash
+            FROM admin_users
+            WHERE username = ?
+        """, (username,))
+
+        admin = cursor.fetchone()
+
+        if admin is None:
+            return None
+
+        admin_id, stored_username, stored_hash = admin
+
+        if verify_password(password, stored_hash):
+            return {
+                "id": admin_id,
+                "username": stored_username
+            }
+
+        return None
+
+    finally:
+        connection.close()
