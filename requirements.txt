@@ -1,6 +1,7 @@
 altair==6.3.0
 anyio==4.16.0
 attrs==26.1.0
+bcrypt
 certifi==2026.11.20
 charset-normalizer==3.5.3
 click==8.5.1

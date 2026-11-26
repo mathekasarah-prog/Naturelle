@@ -19,6 +19,15 @@ def initialize_db():
             )
             
         """)
+        
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS admin_users(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL UNIQUE,
+                password_hash TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
         connection.commit()
     except sqlite3.Error:
         connection.rollback()
