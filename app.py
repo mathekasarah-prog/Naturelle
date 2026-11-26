@@ -124,7 +124,7 @@ if page == "Dashboard":
     out_of_stock = sum(
         1 for product in products if product[3] == 0
     )
-    
+     
     # Count products in each category
     category_counts = {}
 
@@ -268,7 +268,7 @@ elif page == "Add Product":
             else:
                 st.error("Please enter valid product details.")
         
-#UPDATE PRODUCTS
+#UPDATE PRODUCT
 elif page == "Update Product":
 
     st.subheader("Update Product")

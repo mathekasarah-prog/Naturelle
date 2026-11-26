@@ -34,10 +34,7 @@ def initialize_db():
         raise
     finally:
         connection.close()
-        
-    
-        
-        
+         
 #LOADING SAMPLE PRODUCT
 def load_sample_products():
     connection = sqlite3.connect(DB_NAME)
